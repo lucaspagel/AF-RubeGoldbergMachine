@@ -190,24 +190,35 @@
         }
 
         function createGoal() {
+            redMat = new BABYLON.StandardMaterial("redMat", scene);
+            redMat.diffuseColor = new BABYLON.Color3(1, 0, 0);  
+
+            yelMat = new BABYLON.StandardMaterial("yelMat", scene);
+            yelMat.diffuseColor = new BABYLON.Color3(1, 1, 0);  
+
             torus = BABYLON.MeshBuilder.CreateTorus("torus", {diameter: 10, thickness: 5, tessellation: 20});
             torus.position = new BABYLON.Vector3(13, -110, 0);
+            torus.material = yelMat;
 
             sphere1 = BABYLON.MeshBuilder.CreateSphere("sphere1", {diameter: 9});
             sphere1.position = new BABYLON.Vector3(13, -110, 5);
             sphere1.physicsImpostor = new BABYLON.PhysicsImpostor(sphere1, BABYLON.PhysicsImpostor.SphereImpostor,{ mass:0, friction:1, margin: 50 },scene);
+            sphere1.material = redMat;
 
             sphere2 = BABYLON.MeshBuilder.CreateSphere("sphere2", {diameter: 9});
             sphere2.position = new BABYLON.Vector3(13, -110, -5);
             sphere2.physicsImpostor = new BABYLON.PhysicsImpostor(sphere2, BABYLON.PhysicsImpostor.SphereImpostor,{ mass:0, friction:1, margin: 50 },scene);
+            sphere2.material = redMat;
             
             sphere3 = BABYLON.MeshBuilder.CreateSphere("sphere3", {diameter: 9});
             sphere3.position = new BABYLON.Vector3(18, -110, 0);
             sphere3.physicsImpostor = new BABYLON.PhysicsImpostor(sphere3, BABYLON.PhysicsImpostor.SphereImpostor,{ mass:0, friction:1, margin: 50 },scene);
+            sphere3.material = redMat;
 
             sphere4 = BABYLON.MeshBuilder.CreateSphere("sphere4", {diameter: 9});
             sphere4.position = new BABYLON.Vector3(8, -110, 0);
             sphere4.physicsImpostor = new BABYLON.PhysicsImpostor(sphere4, BABYLON.PhysicsImpostor.SphereImpostor,{ mass:0, friction:1, margin: 50 },scene);
+            sphere4.material = redMat;
         }
 
         function createCoin() {
@@ -401,6 +412,9 @@
             var mat0 = new BABYLON.StandardMaterial("mat0", scene);
             
             var newMesh = subCSG.toMesh("csg2", mat0, scene);
+            pipeMat = new BABYLON.StandardMaterial("pipeMat");
+            pipeMat.diffuseTexture = new BABYLON.Texture("./texturas/pipe.jpg");
+            newMesh.material = pipeMat;
             
             scene.removeMesh(inner);
             scene.removeMesh(outer);
@@ -506,10 +520,15 @@
             // funil com menes que giram dentro e curvatura lateral na saída
 
             cone = BABYLON.MeshBuilder.CreateCylinder("cone", {diameterTop: 0, diameter: 7, height: 4, tessellation: 40});
+            yellowMat = new BABYLON.StandardMaterial("yellowMat");
+            yellowMat.diffuseTexture = new BABYLON.Texture("./texturas/floor-metal.jpg");
+            cone.material = yellowMat;
+            metalMat = new BABYLON.StandardMaterial("metalMat");
+            metalMat.diffuseTexture = new BABYLON.Texture("./texturas/yellow-metal.jpg");
 
-            createObs(8, 1, 1.3);
-            createObs(12, -0.5, 2.6);
-            createObs(16, -2, 3.9);
+            createObs(8, 1, 1.3, metalMat);
+            createObs(12, -0.5, 2.6, metalMat);
+            createObs(16, -2, 3.9, metalMat);
 
             // coneSuporte = BABYLON.MeshBuilder.CreateCylinder("coneSuporte", {diameter: 1, height: 30, tessellation: 40});
             // coneSuporte.rotation.x = Math.PI/2;
@@ -527,18 +546,21 @@
 
             coneSuporte = BABYLON.MeshBuilder.CreateCylinder("cone", {diameter: 4, height: 2});
             coneSuporte.position.y -=5;
+            coneSuporte.material = metalMat;
             coneSuporte.physicsImpostor = new BABYLON.PhysicsImpostor(coneSuporte, BABYLON.PhysicsImpostor.MeshImpostor,{mass:0, friction:1, margin: 50},scene);
             // coneSuporte.setEnabled(false);
         }
 
-        function createObs(num, posY, posZ) {
+        function createObs(num, posY, posZ, metalMat) {
             for(var i=0; i<num; i++){
                 coneObsBody = BABYLON.MeshBuilder.CreateBox("coneObsBody", {height: 0.1, width:0.5, depth: 1});
                 coneObsBody.position.y = 3;
+                coneObsBody.material = metalMat;
 
                 coneObsTip = BABYLON.MeshBuilder.CreateBox("coneObsBody", {height: 0.1, width:0.5, depth: 0.5});
                 coneObsTip.rotation.x = Math.PI/4;
                 coneObsTip.position = new BABYLON.Vector3(0, 3.2, -0.6);
+                coneObsTip.material = metalMat;
 
                 coneObsBody.addChild(coneObsTip);
                 coneObsBody.position = new BABYLON.Vector3(0, posY, posZ);
@@ -568,12 +590,19 @@
             var actuator = new BABYLON.Mesh("actuator", scene);
             
             var pistonBase = BABYLON.MeshBuilder.CreateCylinder("pistonBase", {height: 2, diameter: 2}, scene);
+            baseMat = new BABYLON.StandardMaterial("baseMat");
+            baseMat.diffuseTexture = new BABYLON.Texture("./texturas/rubber.jpg");
+            pistonBase.material = baseMat;
 
             var pistonRod = BABYLON.MeshBuilder.CreateCylinder("pistonRod", {height: 2, diameter: 0.5}, scene);
             pistonRod.position.y = 2;
+            rodMat = new BABYLON.StandardMaterial("rodMat");
+            rodMat.diffuseTexture = new BABYLON.Texture("./texturas/floor-metal.jpg");
+            pistonRod.material = rodMat;
 
             var pistonCrown = BABYLON.MeshBuilder.CreateCylinder("pistonCrown", {height: 0.5, diameter: 1.8}, scene);
             pistonCrown.position.y = 3;
+            pistonCrown.material = baseMat;
 
             actuator.addChild(pistonRod);
             actuator.addChild(pistonCrown);
