@@ -116,9 +116,9 @@
             Promise.all([
             BABYLON.SceneLoader.AppendAsync("https://models.babylonjs.com/Marble/marble/marble.gltf")
             ]).then(function c() {
-                     var marbleStartPos = new BABYLON.Vector3(17,50,0);
+                    // var marbleStartPos = new BABYLON.Vector3(17,50,0);
                     // var marbleStartPos = new BABYLON.Vector3(-10,-20,0);
-                    // marbleStartPos = new BABYLON.Vector3(-30,-50,0);
+                    var marbleStartPos = new BABYLON.Vector3(-30,-50,0);
                     marble = scene.getMeshByName("marble");
                     marble.setParent(null);
                     marble.position = marbleStartPos;
@@ -184,8 +184,20 @@
                 set.systems.forEach(s => {
                     s.disposeOnStop = true;
                 });
+                playSound(1);
                 set.start();
                 setTimeout(function() { set.dispose(); }, 2000);
+            });
+        }
+
+        function playSound(index){
+            var sounds;
+            var music;
+
+            sounds = ["obama.mp3"];
+
+            music = new BABYLON.Sound("Music", "/" + sounds[index], scene, function () {
+                    music.play();
             });
         }
 
@@ -623,23 +635,20 @@
             var dupla = new BABYLON.GUI.TextBlock();
             dupla.text = "Lucas Pagel de Faria - 180608";
             dupla.color = "black";
-            dupla.fontSize = 20;
+            dupla.fontSize = 26;
             dupla.textHorizontalAlignment = BABYLON.GUI.Control.HORIZONTAL_ALIGNMENT_LEFT;
             dupla.textVerticalAlignment = BABYLON.GUI.Control.VERTICAL_ALIGNMENT_BOTTOM;
 
+            var inst = new BABYLON.GUI.TextBlock();
+            inst.text = "Som e Partícula ao chegar ao fim do trajeto";
+            inst.color = "black";
+            inst.fontSize = 26;
+            inst.textHorizontalAlignment = BABYLON.GUI.Control.HORIZONTAL_ALIGNMENT_RIGHT;
+            inst.textVerticalAlignment = BABYLON.GUI.Control.VERTICAL_ALIGNMENT_BOTTOM;
+
             advancedTexture = BABYLON.GUI.AdvancedDynamicTexture.CreateFullscreenUI("UI");
             advancedTexture.addControl(dupla);
-        }
-
-        function playSound(index){
-            var sounds;
-            var music;
-
-            sounds = ["explosion.mp3", "tiro.mp3"]
-
-            music = new BABYLON.Sound("Music",sounds[index], scene, function () {
-                    music.play();
-            });
+            advancedTexture.addControl(inst);
         }
 
         function loop(scene) {
