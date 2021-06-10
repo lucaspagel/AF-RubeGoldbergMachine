@@ -105,10 +105,10 @@
 
             createGoal();
 
-            createMarbles(scene);            
+            createMarbles(scene);
 
             loop(scene);
-            
+
             return scene;
         }
 
@@ -116,9 +116,9 @@
             Promise.all([
             BABYLON.SceneLoader.AppendAsync("https://models.babylonjs.com/Marble/marble/marble.gltf")
             ]).then(function c() {
-                    // var marbleStartPos = new BABYLON.Vector3(17,50,0);
+                    var marbleStartPos = new BABYLON.Vector3(17,50,0);
                     // var marbleStartPos = new BABYLON.Vector3(-10,-20,0);
-                    var marbleStartPos = new BABYLON.Vector3(-30,-50,0);
+                    // var marbleStartPos = new BABYLON.Vector3(-30,-50,0);
                     marble = scene.getMeshByName("marble");
                     marble.setParent(null);
                     marble.position = marbleStartPos;
@@ -139,6 +139,7 @@
                     );
                 }
             )
+            //setTimeout( createMarbles(scene), 2000);
         }
 
         function fadeAndDestroyMarble(marble){
